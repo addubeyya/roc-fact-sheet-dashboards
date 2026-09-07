@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOC — Fact Sheet Dashboard</title>
+<style>
+  :root{
+    --navy:#0B3556; --ink:#1F2A37; --teal:#1C7293; --orange:#E8703A;
+    --line:#E2E8EE; --panel:#EDF1F4; --bg:#F4F7F9; --muted:#6B7A8D;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Segoe UI",Calibri,system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 24px 48px}
+
+  header.site{background:var(--navy);color:#fff;padding:30px 0 26px}
+  header.site .wrap{padding-top:0;padding-bottom:0}
+  .brand{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px}
+  .brand h1{font-size:26px;letter-spacing:.14em;font-weight:800}
+  .brand .stamp{margin-left:auto;font-size:12.5px;color:#CADCFC}
+  .tagline{margin-top:8px;font-size:13.5px;color:#CADCFC}
+  .chips{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+  .chip{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.25);color:#fff;
+        font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:.04em}
+  .chip small{font-weight:400;opacity:.8;margin-left:6px;letter-spacing:0}
+
+  h2.section{font-size:13px;letter-spacing:.18em;color:var(--navy);font-weight:800;margin:34px 0 14px;
+             display:flex;align-items:center;gap:10px}
+  h2.section .dot{width:9px;height:9px;border-radius:50%;background:var(--orange);flex:none}
+
+  .grid{display:grid;gap:14px}
+  .g5{grid-template-columns:repeat(5,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:980px){.g5{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px;box-shadow:0 1px 2px rgba(11,53,86,.05)}
+  .card .label{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .card .big{font-size:34px;font-weight:800;color:var(--orange);margin:4px 0 6px;font-variant-numeric:tabular-nums}
+  .card .big.teal{color:var(--teal)}
+  .card .sub{font-size:12.5px;color:var(--muted)}
+  .split{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .kv{background:var(--panel);border-radius:6px;padding:3px 8px;font-size:12px;color:var(--ink);font-variant-numeric:tabular-nums}
+  .kv b{color:var(--navy)}
+
+  .bars{margin-top:12px}
+  .bar-row{display:grid;grid-template-columns:44px 1fr 74px;align-items:center;gap:10px;margin:7px 0;font-size:12.5px}
+  .bar-row .name{font-weight:700;color:var(--navy)}
+  .bar-track{background:var(--panel);border-radius:5px;height:14px;overflow:hidden}
+  .bar-fill{height:100%;background:var(--teal);border-radius:5px}
+  .bar-row .val{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+
+  table.rank{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  table.rank th{background:var(--navy);color:#fff;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+                text-align:left;padding:9px 14px;font-weight:700}
+  table.rank td{padding:9px 14px;font-size:13.5px;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+  table.rank td.rank-n{color:var(--orange);font-weight:800;width:36px}
+  table.rank td.atoll{color:var(--teal);font-weight:700;width:56px}
+  table.rank td.num{text-align:right;color:var(--muted)}
+
+  .changes{background:#fff;border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:10px;padding:14px 18px}
+  .changes ul{list-style:none}
+  .changes li{font-size:13px;padding:4px 0;color:var(--ink)}
+  .changes li .old{color:var(--muted);text-decoration:line-through;margin-right:6px}
+  .changes li .new{color:var(--navy);font-weight:700}
+
+  footer{margin-top:40px;border-top:1px solid var(--line);padding-top:14px;font-size:11.5px;color:var(--muted)}
+  .mbars{display:flex;align-items:flex-end;gap:12px;height:210px;margin-top:16px;padding:0 4px}
+  .mcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .mval{font-size:12px;font-weight:800;color:var(--navy);margin-bottom:5px;font-variant-numeric:tabular-nums}
+  .mfill{width:100%;max-width:58px;background:var(--teal);border-radius:6px 6px 0 0;min-height:3px}
+  .mlbl{font-size:12.5px;color:#6B7A8D;margin-top:8px;font-weight:700}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand">
+      <h1>GOC</h1>
+      <span class="stamp" id="stamp"></span>
+    </div>
+    <div class="tagline">Huvadhu Atoll (Two Southern Atolls) &nbsp;•&nbsp; 18 Residential &amp; 8 Resort Islands</div>
+    <div class="chips" id="atollChips"></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <h2 class="section"><span class="dot"></span>TOURISM</h2>
+  <div class="grid g5" id="tourismCards"></div>
+
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card">
+      <div class="label">Guest Arrivals YTD by Atoll</div>
+      <div class="bars" id="arrivalBars"></div>
+    </div>
+    <div class="card">
+      <div class="label">Bed Capacity by Atoll (Resort + Guesthouse)</div>
+      <div class="bars" id="bedBars"></div>
+    </div>
+  </div>
+
+  <h2 class="section"><span class="dot"></span>MONTHLY ARRIVALS 2026 (JAN–JUN)</h2>
+  <div class="card">
+    <div class="label">Monthly tourist arrivals · Ministry of Tourism monthly statistics (arrivals-by-atoll, new framework from Jan 2026)</div>
+    <div class="mbars" id="monthlyChart"></div>
+  </div>
+
+  <h2 class="section"><span class="dot"></span>DEMOGRAPHICS &amp; AIRPORTS</h2>
+  <div class="grid g3" id="demoCards"></div>
+
+  <h2 class="section"><span class="dot"></span>TOP 5 ISLANDS</h2>
+  <div class="grid g2">
+    <table class="rank" id="ghTable">
+      <thead><tr><th colspan="2">Guesthouse Islands</th><th></th><th style="text-align:right">GH Beds</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <table class="rank" id="resTable">
+      <thead><tr><th colspan="2">Residential Islands</th><th></th><th style="text-align:right">Residents</th><th style="text-align:right">Households</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <h2 class="section"><span class="dot"></span>CHANGES IN LATEST UPDATE</h2>
+  <div class="changes"><ul id="changeList"></ul></div>
+
+  <footer id="sources"></footer>
+</div>
+
+<script id="factsheet-data" type="application/json">
+{
+  "last_updated": "2026-08-30",
+  "source_issue": "Ministry of Tourism & Civil Aviation Tourism Update Issue 32 (27 Aug 2026)",
+  "arrivals_as_of": "26 Aug 2026",
+  "atolls": [
+    {
+      "code": "GA",
+      "name": "Gaafu Alifu / North Huvadhu"
+    },
+    {
+      "code": "GDh",
+      "name": "Gaafu Dhaalu / South Huvadhu"
+    }
+  ],
+  "tourism": {
+    "resort_islands": {
+      "total": 8,
+      "GA": 6,
+      "GDh": 2
+    },
+    "resort_beds": {
+      "total": 1741,
+      "GA": 1301,
+      "GDh": 440
+    },
+    "guesthouses": {
+      "total": 23,
+      "GA": 14,
+      "GDh": 9
+    },
+    "guesthouse_beds": {
+      "total": 276,
+      "GA": 150,
+      "GDh": 126
+    },
+    "arrivals_ytd": {
+      "total": 34939,
+      "percent_of_national": 2.4,
+      "by_atoll": {
+        "GA": 22732,
+        "GDh": 12207
+      }
+    }
+  },
+  "demographics": {
+    "registered_population_2025": 37466,
+    "expat_population_excl_resorts": 2751,
+    "inhabited_islands": 18,
+    "households_census2022": 4910
+  },
+  "airports": {
+    "total": 4,
+    "international": "None",
+    "domestic": "GKK · GA. Kooddoo, KDM · GDh. Kaadedhdhoo, RUL · GDh. Maavarulu, FMT · GDh. Faresmaathodaa"
+  },
+  "monthly_arrivals_2026": {
+    "Jan": 6107,
+    "Feb": 7111,
+    "Mar": 4605,
+    "Apr": 4159,
+    "May": 3128,
+    "Jun": 2997
+  },
+  "top5_guesthouse_islands": [
+    {
+      "rank": 1,
+      "atoll": "GA",
+      "island": "Maamendhoo",
+      "n": 36
+    },
+    {
+      "rank": 2,
+      "atoll": "GA",
+      "island": "Gemanafushi",
+      "n": 30
+    },
+    {
+      "rank": 3,
+      "atoll": "GDh",
+      "island": "Vaadhoo",
+      "n": 44
+    },
+    {
+      "rank": 4,
+      "atoll": "GA",
+      "island": "Villingili",
+      "n": 30
+    },
+    {
+      "rank": 5,
+      "atoll": "GDh",
+      "island": "Hoadehdhoo",
+      "n": 30
+    }
+  ],
+  "top5_residential_islands": [
+    {
+      "rank": 1,
+      "atoll": "GDh",
+      "island": "Thinadhoo",
+      "n": 8210,
+      "hh": 1295
+    },
+    {
+      "rank": 2,
+      "atoll": "GA",
+      "island": "Villingili",
+      "n": 3915,
+      "hh": 604
+    },
+    {
+      "rank": 3,
+      "atoll": "GDh",
+      "island": "Gadhdhoo",
+      "n": 3138,
+      "hh": 295
+    },
+    {
+      "rank": 4,
+      "atoll": "GDh",
+      "island": "Madaveli",
+      "n": 2082,
+      "hh": 254
+    },
+    {
+      "rank": 5,
+      "atoll": "GA",
+      "island": "Dhaandhoo",
+      "n": 2062,
+      "hh": 218
+    }
+  ],
+  "recent_changes": [
+    {
+      "metric": "Guesthouses (count)",
+      "old": "24 (GA 14, GDh 10)",
+      "new": "23 (GA 14, GDh 9)"
+    }
+  ],
+  "sources": "Sources: Ministry of Tourism & Civil Aviation Tourism Update Issue 32 (27 Aug 2026) · Stats Maldives Census 2022 & Statistical Yearbook 2026 (Registered Population, 31 Dec 2025) · Arrivals = YTD 26 Aug 2026 by atoll & port of entry"
+}
+</script>
+
+<script>
+const D = JSON.parse(document.getElementById('factsheet-data').textContent);
+const fmt = n => n.toLocaleString('en-US');
+const codes = D.atolls.map(a => a.code);
+
+document.getElementById('stamp').textContent = 'Last updated ' + D.last_updated;
+document.getElementById('atollChips').innerHTML = D.atolls.map(a =>
+  `<span class="chip">${a.code}<small>${a.name}</small></span>`).join('');
+
+const t = D.tourism;
+function card(label, value, sub, obj, teal){
+  const split = obj ? `<div class="split">${codes.map(c=>`<span class="kv"><b>${c}</b> ${fmt(obj[c])}</span>`).join('')}</div>` : '';
+  return `<div class="card"><div class="label">${label}</div>
+    <div class="big${teal?' teal':''}">${value}</div>
+    <div class="sub">${sub||''}</div>${split}</div>`;
+}
+document.getElementById('tourismCards').innerHTML =
+  card('Resort Islands', fmt(t.resort_islands.total), '', t.resort_islands) +
+  card('Resort Beds', fmt(t.resort_beds.total), 'in operation', t.resort_beds) +
+  card('Guesthouses', fmt(t.guesthouses.total), 'registered & operational', t.guesthouses) +
+  card('Guesthouse Beds', fmt(t.guesthouse_beds.total), 'in operation', t.guesthouse_beds) +
+  card('Guest Arrivals YTD', fmt(t.arrivals_ytd.total),
+       `${t.arrivals_ytd.percent_of_national}% of national · as of ${D.arrivals_as_of}`, null, true);
+
+function bars(el, obj, denomHint){
+  const max = Math.max(...codes.map(c=>obj[c]));
+  document.getElementById(el).innerHTML = codes.map(c=>`
+    <div class="bar-row"><span class="name">${c}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${(obj[c]/max*100).toFixed(1)}%"></div></div>
+      <span class="val">${fmt(obj[c])}</span></div>`).join('');
+}
+bars('arrivalBars', t.arrivals_ytd.by_atoll);
+const bedTotals = Object.fromEntries(codes.map(c=>[c, t.resort_beds[c]+t.guesthouse_beds[c]]));
+bars('bedBars', bedTotals);
+
+const dg = D.demographics, ap = D.airports;
+document.getElementById('demoCards').innerHTML =
+  card('Registered Population 2025', fmt(dg.registered_population_2025), 'two atolls total') +
+  card('Expat Population', fmt(dg.expat_population_excl_resorts), 'excluding resorts') +
+  `<div class="card"><div class="label">Airports</div><div class="big teal">${ap.total}</div>
+   <div class="sub">International: <b>${ap.international}</b><br>Domestic: <b>${ap.domestic}</b></div></div>` +
+  card('Inhabited Islands', fmt(dg.inhabited_islands), 'across the region') +
+  card('Households', fmt(dg.households_census2022), 'Census 2022 · approx.');
+
+function fillRank(id, rows){
+  document.querySelector('#'+id+' tbody').innerHTML = rows.map(r=>`
+    <tr><td class="rank-n">${r.rank}</td><td class="atoll">${r.atoll}</td>
+        <td>${r.island}</td><td class="num">${fmt(r.n)}</td>${r.hh!==undefined?`<td class="num">${fmt(r.hh)}</td>`:``}</tr>`).join('');
+}
+fillRank('ghTable', D.top5_guesthouse_islands);
+fillRank('resTable', D.top5_residential_islands);
+(function(){var m=D.monthly_arrivals_2026;if(!m)return;var ks=Object.keys(m);var mx=Math.max.apply(null,ks.map(function(k){return m[k];}));document.getElementById('monthlyChart').innerHTML=ks.map(function(k){var h=(m[k]/mx*100).toFixed(1);return '<div class="mcol"><div class="mval">'+fmt(m[k])+'</div><div class="mfill" style="height:'+h+'%"></div><div class="mlbl">'+k+'</div></div>';}).join('');})();
+
+document.getElementById('changeList').innerHTML = D.recent_changes.length
+  ? D.recent_changes.map(c=>`<li>${c.metric}: <span class="old">${c.old}</span><span class="new">${c.new}</span></li>`).join('')
+  : '<li>No changes since previous update.</li>';
+
+document.getElementById('sources').textContent = D.sources;
+</script>
+</body>
+</html>
