@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operations Centers — Fact Sheet Hub</title>
+<style>
+  :root{
+    --navy:#0B3556; --ink:#1F2A37; --teal:#1C7293; --orange:#E8703A;
+    --line:#E2E8EE; --panel:#EDF1F4; --bg:#F4F7F9; --muted:#6B7A8D;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Segoe UI",Calibri,system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 24px 48px}
+
+  header.site{background:var(--navy);color:#fff;padding:34px 0 30px}
+  header.site .wrap{padding-top:0;padding-bottom:0}
+  .brand{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px}
+  .brand h1{font-size:26px;letter-spacing:.14em;font-weight:800}
+  .brand .stamp{margin-left:auto;font-size:12.5px;color:#CADCFC}
+  .tagline{margin-top:8px;font-size:13.5px;color:#CADCFC}
+
+  .totals{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px}
+  @media(max-width:860px){.totals{grid-template-columns:repeat(2,1fr)}}
+  .tot{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;box-shadow:0 1px 2px rgba(11,53,86,.05)}
+  .tot .label{font-size:11.5px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .tot .big{font-size:28px;font-weight:800;color:var(--teal);margin-top:2px;font-variant-numeric:tabular-nums}
+
+  h2.section{font-size:13px;letter-spacing:.18em;color:var(--navy);font-weight:800;margin:34px 0 14px;display:flex;align-items:center;gap:10px}
+  h2.section .dot{width:9px;height:9px;border-radius:50%;background:var(--orange);flex:none}
+
+  .regions{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  @media(max-width:980px){.regions{grid-template-columns:1fr}}
+  a.region{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:12px;
+           box-shadow:0 1px 2px rgba(11,53,86,.05);transition:box-shadow .15s, transform .15s}
+  a.region:hover{box-shadow:0 6px 18px rgba(11,53,86,.14);transform:translateY(-2px)}
+  .rhead{background:var(--navy);color:#fff;border-radius:12px 12px 0 0;padding:16px 18px}
+  .rhead .code{font-size:22px;font-weight:800;letter-spacing:.1em}
+  .rhead .rname{font-size:12.5px;color:#CADCFC;margin-top:2px}
+  .rchips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .rchip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px}
+  .rbody{padding:14px 18px 16px}
+  .stat-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--panel);font-variant-numeric:tabular-nums}
+  .stat-row:last-of-type{border-bottom:none}
+  .stat-row .k{color:var(--muted)}
+  .stat-row .v{font-weight:700;color:var(--navy)}
+  .stat-row .v.orange{color:var(--orange)}
+  .open{margin-top:12px;text-align:center;background:var(--orange);color:#fff;font-weight:800;font-size:13px;
+        border-radius:8px;padding:9px 0;letter-spacing:.04em}
+
+  footer{margin-top:40px;border-top:1px solid var(--line);padding-top:14px;font-size:11.5px;color:var(--muted)}
+
+  .signals{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+  @media(max-width:980px){.signals{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.signals{grid-template-columns:1fr}}
+  .sig{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 16px;box-shadow:0 1px 2px rgba(11,53,86,.05)}
+  .sig .label{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+  .sig .big{font-size:22px;font-weight:800;color:var(--navy);margin-top:3px;font-variant-numeric:tabular-nums}
+  .sig .sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+
+  .exec{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(11,53,86,.05);padding:18px 20px;margin-bottom:16px}
+  .exec p{font-size:13.5px;color:var(--ink);margin:0 0 10px;line-height:1.55}
+  .exec p:last-child{margin-bottom:0}
+  .exec b{color:var(--navy)}
+  .subhead{font-size:11.5px;letter-spacing:.1em;color:var(--teal);font-weight:800;text-transform:uppercase;margin:0 0 12px}
+
+  .intensity{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(11,53,86,.05);padding:18px 20px;margin-bottom:16px}
+  .ibar{display:grid;grid-template-columns:48px 1fr 132px;align-items:center;gap:10px;margin:8px 0;font-size:12.5px;font-variant-numeric:tabular-nums}
+  .ibar .code{font-weight:800;color:var(--navy)}
+  .itrack{background:var(--panel);border-radius:6px;height:15px;overflow:hidden}
+  .ifill{height:100%;background:var(--teal);border-radius:6px}
+  .ibar .val{color:var(--muted);text-align:right}
+
+  .arch{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:16px}
+  .acard{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(11,53,86,.05);padding:15px 17px;border-top:4px solid var(--teal)}
+  .acard.grow{border-top-color:var(--orange)}
+  .acard.thin{border-top-color:var(--muted)}
+  .acard .atag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;background:var(--panel);color:var(--navy);margin-bottom:9px}
+  .acard h4{font-size:14px;color:var(--navy);margin:0 0 6px;font-weight:800}
+  .acard p{font-size:12.5px;color:var(--ink);line-height:1.5;margin:0}
+
+  .priorities{background:var(--navy);color:#fff;border-radius:12px;padding:18px 20px;margin-bottom:8px}
+  .priorities .subhead{color:#CADCFC}
+  .prow{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:13px;line-height:1.5}
+  .prow:last-child{border-bottom:none}
+  .pnum{flex:none;width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+  .inote{font-size:11px;color:var(--muted);margin-top:10px;font-style:italic}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand">
+      <h1>OPERATIONS CENTERS — FACT SHEET HUB</h1>
+      <span class="stamp" id="stamp"></span>
+    </div>
+    <div class="tagline">Seventeen atolls across seven regions · Click a region to open its full dashboard</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <h2 class="section"><span class="dot"></span>REGIONAL INSIGHTS · EXECUTIVE VIEW</h2>
+  <div class="signals" id="signals"></div>
+  <div class="exec" id="exec"></div>
+  <div class="intensity" id="intensity"></div>
+  <div class="arch" id="arch"></div>
+  <div class="priorities" id="priorities"></div>
+  <div class="inote">Insights are derived from the fact-sheet data below (arrivals, beds, population, airports). Layering in ARPU by segment and network capex per region would turn this market-shape view into a returns ranking.</div>
+
+  <h2 class="section"><span class="dot"></span>REGIONS</h2>
+  <div class="regions" id="regions"></div>
+
+  <footer id="sources"></footer>
+</div>
+
+<script id="hub-data" type="application/json">
+{
+  "last_updated": "2026-08-30",
+  "arrivals_as_of": "26 Aug 2026",
+  "regions": [
+    {
+      "code": "KOC",
+      "name": "Kulhudhuffushi Operations Center",
+      "atolls": [
+        "HA",
+        "HDh",
+        "Sh"
+      ],
+      "url": "../koc/",
+      "resorts": 5,
+      "resort_beds": 1054,
+      "guesthouses": 38,
+      "guesthouse_beds": 484,
+      "arrivals": 24696,
+      "pct": 1.7,
+      "regpop": 73355,
+      "households": 10580,
+      "airports": 3
+    },
+    {
+      "code": "EOC",
+      "name": "Eydhafushi Operations Center",
+      "atolls": [
+        "N",
+        "R",
+        "B",
+        "Lh"
+      ],
+      "url": "../eoc/",
+      "resorts": 54,
+      "resort_beds": 13984,
+      "guesthouses": 100,
+      "guesthouse_beds": 1778,
+      "arrivals": 320919,
+      "pct": 22.5,
+      "regpop": 72954,
+      "households": 10390,
+      "airports": 4
+    },
+    {
+      "code": "AOC",
+      "name": "Ari Operations Center",
+      "atolls": [
+        "AA",
+        "ADh",
+        "F",
+        "Dh"
+      ],
+      "url": "../aoc/",
+      "resorts": 38,
+      "resort_beds": 10042,
+      "guesthouses": 298,
+      "guesthouse_beds": 4480,
+      "arrivals": 280023,
+      "pct": 19.6,
+      "regpop": 37461,
+      "households": 5480,
+      "airports": 2
+    },
+    {
+      "code": "LOC",
+      "name": "Laamu Operations Center",
+      "atolls": [
+        "Th",
+        "L"
+      ],
+      "url": "../loc/",
+      "resorts": 3,
+      "resort_beds": 512,
+      "guesthouses": 18,
+      "guesthouse_beds": 324,
+      "arrivals": 6595,
+      "pct": 0.5,
+      "regpop": 36615,
+      "households": 5100,
+      "airports": 2
+    },
+    {
+      "code": "GOC",
+      "name": "Gaafu Operations Center",
+      "atolls": [
+        "GA",
+        "GDh"
+      ],
+      "url": "../goc/",
+      "resorts": 8,
+      "resort_beds": 1741,
+      "guesthouses": 23,
+      "guesthouse_beds": 276,
+      "arrivals": 34939,
+      "pct": 2.4,
+      "regpop": 37466,
+      "households": 4910,
+      "airports": 4
+    },
+    {
+      "code": "FOC",
+      "name": "Fuvahmulah Operations Center",
+      "atolls": [
+        "Gn"
+      ],
+      "url": "../foc/",
+      "resorts": 0,
+      "resort_beds": 0,
+      "guesthouses": 23,
+      "guesthouse_beds": 420,
+      "arrivals": 5534,
+      "pct": 0.4,
+      "regpop": 13781,
+      "households": 1980,
+      "airports": 1
+    },
+    {
+      "code": "SOC",
+      "name": "Seenu Operations Center",
+      "atolls": [
+        "S"
+      ],
+      "url": "../soc/",
+      "resorts": 2,
+      "resort_beds": 824,
+      "guesthouses": 16,
+      "guesthouse_beds": 312,
+      "arrivals": 10782,
+      "pct": 0.8,
+      "regpop": 35334,
+      "households": 5000,
+      "airports": 1
+    }
+  ],
+  "sources": "Sources: Ministry of Tourism & Civil Aviation Tourism Update Issue 32 (27 Aug 2026) · Stats Maldives Census 2022 & Statistical Yearbook 2026 Table 3.3 (Registered Population, 31 Dec 2025) · Households = Census 2022 (approx.) · Arrivals = YTD 26 Aug 2026 by atoll & port of entry"
+}
+</script>
+
+<script>
+const D = JSON.parse(document.getElementById('hub-data').textContent);
+const fmt = n => n.toLocaleString('en-US');
+document.getElementById('stamp').textContent = 'Last updated ' + D.last_updated;
+
+document.getElementById('regions').innerHTML = D.regions.map(r => `
+  <a class="region" href="${r.url}" target="_blank" rel="noopener">
+    <div class="rhead">
+      <div class="code">${r.code}</div>
+      <div class="rchips">${r.atolls.map(a=>`<span class="rchip">${a}</span>`).join('')}</div>
+    </div>
+    <div class="rbody">
+      <div class="stat-row"><span class="k">Guest arrivals YTD</span><span class="v orange">${fmt(r.arrivals)} (${r.pct}%)</span></div>
+      <div class="stat-row"><span class="k">Resort islands · beds</span><span class="v">${fmt(r.resorts)} · ${fmt(r.resort_beds)}</span></div>
+      <div class="stat-row"><span class="k">Guesthouses · beds</span><span class="v">${fmt(r.guesthouses)} · ${fmt(r.guesthouse_beds)}</span></div>
+      <div class="stat-row"><span class="k">Registered population</span><span class="v">${fmt(r.regpop)}</span></div>
+      <div class="stat-row"><span class="k">Households <span style="font-weight:400;color:var(--muted)">(Census 2022)</span></span><span class="v">${fmt(r.households)}</span></div>
+      <div class="stat-row"><span class="k">Airports</span><span class="v">${fmt(r.airports)}</span></div>
+      <div class="open">OPEN ${r.code} DASHBOARD →</div>
+    </div>
+  </a>`).join('');
+
+// ---------- Regional insights (computed) ----------
+const byCode = Object.fromEntries(D.regions.map(r=>[r.code,r]));
+const beds = r => r.resort_beds + r.guesthouse_beds;
+const intensity = r => Math.round(r.arrivals / r.regpop * 1000);
+const totalBeds = D.regions.reduce((s,r)=>s+beds(r),0);
+const centralBeds = beds(byCode.AOC) + beds(byCode.EOC);
+const centralBedPct = Math.round(centralBeds/totalBeds*100);
+const centralArrPct = (byCode.AOC.pct + byCode.EOC.pct).toFixed(1);
+const ranked = [...D.regions].sort((a,b)=>intensity(b)-intensity(a));
+const topR = ranked[0], botR = ranked[ranked.length-1];
+const maxInt = intensity(topR);
+const spread = Math.round(intensity(topR)/intensity(botR));
+
+document.getElementById('signals').innerHTML =
+  `<div class="sig"><div class="label">Tourism concentration</div><div class="big">${centralBedPct}%</div><div class="sub">of tourist beds in AOC + EOC · ${centralArrPct}% of national arrivals</div></div>` +
+  `<div class="sig"><div class="label">Most tourism-intense</div><div class="big">${topR.code} · ${fmt(maxInt)}</div><div class="sub">arrivals per 1,000 residents (vs ${botR.code} ${fmt(intensity(botR))})</div></div>` +
+  `<div class="sig"><div class="label">Top tourism region</div><div class="big">EOC · ${fmt(byCode.EOC.arrivals)}</div><div class="sub">${byCode.EOC.pct}% of national · largest resort-bed base (${fmt(byCode.EOC.resort_beds)})</div></div>` +
+  `<div class="sig"><div class="label">Largest population</div><div class="big">${byCode.KOC.code} · ${fmt(byCode.KOC.regpop)}</div><div class="sub">yet only ${byCode.KOC.pct}% of national arrivals</div></div>`;
+
+document.getElementById('exec').innerHTML =
+  `<div class="subhead">Executive summary</div>` +
+  `<p>The seven regions run on <b>two different economies</b>. Tourism is highly concentrated — <b>AOC</b> and <b>EOC</b> together hold ${centralArrPct}% of national arrivals and ~${centralBedPct}% of the region's tourist beds — while the largest resident bases sit in the north (<b>EOC</b> and <b>KOC</b>). Tourism-revenue risk and residential scale live in different places.</p>` +
+  `<p><b>Tourism intensity</b> — arrivals per 1,000 registered residents — spans a ~${spread}× range, from ${topR.code} (${fmt(intensity(topR))}) down to ${botR.code} (${fmt(intensity(botR))}). This is the signal for how each region's operational capacity and resources should be allocated — toward <b>seasonal tourist peaks</b> (AOC, EOC) or <b>steady residential load</b> (KOC, LOC, GOC).</p>`;
+
+document.getElementById('intensity').innerHTML =
+  `<div class="subhead">Tourism intensity — arrivals per 1,000 registered residents</div>` +
+  ranked.map(r=>`<div class="ibar"><span class="code">${r.code}</span>`+
+    `<div class="itrack"><div class="ifill" style="width:${(intensity(r)/maxInt*100).toFixed(1)}%"></div></div>`+
+    `<span class="val">${fmt(intensity(r))}</span></div>`).join('');
+
+document.getElementById('arch').innerHTML =
+  `<div class="acard"><span class="atag">Dual engine</span><h4>EOC — defend &amp; invest</h4><p>Largest population (${fmt(byCode.EOC.regpop)}) and second-highest tourism intensity, plus the biggest bed inventory (${fmt(beds(byCode.EOC))}). The only dual-strength asset — and the biggest revenue concentration to protect.</p></div>` +
+  `<div class="acard"><span class="atag">Tourism-critical</span><h4>AOC — high value, high cost</h4><p>Off-the-chart intensity (${fmt(intensity(byCode.AOC))}/1k) and ${fmt(byCode.AOC.guesthouses)} guesthouses — more than the other six regions combined — but the most dispersed footprint. Highest revenue and highest cost-to-serve.</p></div>` +
+  `<div class="acard grow"><span class="atag">Residential giant</span><h4>KOC — ARPU + white space</h4><p>Nearly EOC's population (${fmt(byCode.KOC.regpop)}) but only ${byCode.KOC.pct}% of arrivals. Stable consumer / FTTH demand today; the biggest latent tourism upside, with an international airport already in place.</p></div>` +
+  `<div class="acard thin"><span class="atag">Thin / niche</span><h4>GOC · SOC · LOC · FOC</h4><p>Smaller markets. SOC (Addu) is dense and cheap to serve with tourism upside; FOC is a single ${Math.round(byCode.FOC.regpop/1000)}k-resident island — the most capital-efficient footprint; GOC has 4 airports but no international link.</p></div>`;
+
+document.getElementById('priorities').innerHTML =
+  `<div class="subhead">Strategic priorities</div>` +
+  `<div class="prow"><span class="pnum">1</span><span>Protect and deepen <b>EOC</b> as the one dual-strength asset — largest population and top-tier tourism in a single region.</span></div>` +
+  `<div class="prow"><span class="pnum">2</span><span>Treat <b>KOC</b> as the strategic option — monetize the large, stable resident base now and pre-position for tourism if resort/guesthouse development lands.</span></div>` +
+  `<div class="prow"><span class="pnum">3</span><span>Capitalize on <b>AOC</b> — the most tourism-intense market (${fmt(intensity(byCode.AOC))}/1k) and largest guesthouse base (${fmt(byCode.AOC.guesthouses)}) — to capture premium resort &amp; SME connectivity.</span></div>`;
+
+document.getElementById('sources').textContent = D.sources;
+</script>
+</body>
+</html>
